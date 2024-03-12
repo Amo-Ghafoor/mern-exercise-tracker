@@ -78,15 +78,23 @@ export default class CreateExercise extends Component {
       .then(res => console.log(res.data));
 
     window.location = '/';
+    document.getElementById("success").innerHTML = "نام کاربری با موفقیت ساخته شد";
+    
+    function fade() {
+      document.getElementById("success").innerHTML = "";
+    }
+    
+    const myTimeout = setTimeout(fade, 2000);
+
   }
 
   render() {
     return (
     <div>
-      <h3>Create New Exercise Log</h3>
+      <h3>ساخت برنامه ورزشی</h3>
       <form onSubmit={this.onSubmit}>
         <div className="form-group"> 
-          <label>Username: </label>
+          <label>:نام کاربری</label>
           <select ref="userInput"
               required
               className="form-control"
@@ -103,7 +111,7 @@ export default class CreateExercise extends Component {
           </select>
         </div>
         <div className="form-group"> 
-          <label>Description: </label>
+          <label>:توضیحات </label>
           <input  type="text"
               required
               className="form-control"
@@ -112,7 +120,7 @@ export default class CreateExercise extends Component {
               />
         </div>
         <div className="form-group">
-          <label>Duration (in minutes): </label>
+          <label>:(برحسب دقیقه)مدت زمان</label>
           <input 
               type="text" 
               className="form-control"
@@ -121,7 +129,7 @@ export default class CreateExercise extends Component {
               />
         </div>
         <div className="form-group">
-          <label>Date: </label>
+          <label>:تاریخ </label>
           <div>
             <DatePicker
               selected={this.state.date}
@@ -131,7 +139,10 @@ export default class CreateExercise extends Component {
         </div>
 
         <div className="form-group">
-          <input type="submit" value="Create Exercise Log" className="btn btn-primary" />
+          <input type="submit" value="ساخت برنامه" className="btn btn-primary" />
+          <br/>
+          <br/>
+          <h5 id="success"></h5>
         </div>
       </form>
     </div>

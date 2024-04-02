@@ -9,6 +9,7 @@ export default class EditExercise extends Component {
     super(props);
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeExerciseName = this.onChangeExerciseName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
@@ -29,6 +30,7 @@ export default class EditExercise extends Component {
       .then(response => {
         this.setState({
           username: response.data.username,
+          exerciseName: response.data.exerciseName,
           description: response.data.description,
           duration: response.data.duration,
           date: new Date(response.data.date)
@@ -61,6 +63,11 @@ export default class EditExercise extends Component {
   onChangeDescription(e) {
     this.setState({
       description: e.target.value
+    })
+  }
+  onChangeExerciseName(e) {
+    this.setState({
+      exerciseName: e.target.value
     })
   }
 
@@ -124,6 +131,15 @@ export default class EditExercise extends Component {
                 })
               }
           </select>
+        </div>
+        <div className="form-group"> 
+          <label>:نام برنامه ورزشی</label>
+          <input  type="text"
+              required
+              className="form-control"
+              value={this.state.exerciseName}
+              onChange={this.onChangeExerciseName}
+              />
         </div>
         <div className="form-group"> 
           <label>:توضیحات</label>

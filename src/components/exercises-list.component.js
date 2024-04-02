@@ -57,6 +57,7 @@ export default class ExercisesList extends Component {
           <thead className="thead-light">
             <tr>
               <th>نام کاربری</th>
+              <th>نام برنامه ورزشی</th>
               <th>توضیحات</th>
               <th>مدت زمان</th>
               <th>تاریخ</th>

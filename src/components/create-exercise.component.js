@@ -9,6 +9,7 @@ export default class CreateExercise extends Component {
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
+    this.onChangeExerciseName = this.onChangeExerciseName.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -55,6 +56,11 @@ export default class CreateExercise extends Component {
       duration: e.target.value
     })
   }
+  onChangeExerciseName(e) {
+    this.setState({
+      exerciseName: e.target.value
+    })
+  }
 
   onChangeDate(date) {
     this.setState({
@@ -67,6 +73,7 @@ export default class CreateExercise extends Component {
 
     const exercise = {
       username: this.state.username,
+      exerciseName: this.state.exerciseName,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date
@@ -109,6 +116,15 @@ export default class CreateExercise extends Component {
                 })
               }
           </select>
+        </div>  
+        <div className="form-group"> 
+          <label>:نام برنامه ورزشی</label>
+          <input  type="text"
+              required
+              className="form-control"
+              value={this.state.exerciseName}
+              onChange={this.onChangeExerciseName}
+              />  
         </div>
         <div className="form-group"> 
           <label>:توضیحات </label>

@@ -92,8 +92,17 @@ export default class EditExercise extends Component {
       .then(res => console.log(res.data));
 
     window.location = '/';
-  }
 
+    document.getElementById("success").innerHTML = "برنامه ورزشی با موفقیت ویرایش شد";
+    
+    function fade() {
+      document.getElementById("success").innerHTML = "";
+    }
+    
+    const myTimeout = setTimeout(fade, 2000);
+
+  }
+  
   render() {
     return (
     <div>
@@ -146,9 +155,10 @@ export default class EditExercise extends Component {
 
         <div className="form-group">
           <input type="submit" value="ویرایش برنامه ورزشی" className="btn btn-primary" />
+          <h5 id="success"></h5>
         </div>
       </form>
     </div>
     )
   }
-}
+}  

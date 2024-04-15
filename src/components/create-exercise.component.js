@@ -16,14 +16,31 @@ export default class CreateExercise extends Component {
 
     this.state = {
       username: '',
+      bankName : '',
       description: '',
       duration: 0,
       date: new Date(),
-      users: []
+      users: [],
+      banks : [],
     }
   }
 
   componentDidMount() {
+
+    axios.get(`http://${serverAddress}:5000/bank/`).then(response => {
+      if (response.data.length > 0) {
+        this.setState({
+          banks: response.data.map(bank => bank.name),
+          bankName: response.data[0].name
+        })
+      }
+      console.log(this.state.bank);
+
+    }).catch((error) => {
+      console.log(error);
+    });
+
+
     axios.get(`http://${serverAddress}:5000/users/`)
       .then(response => {
         if (response.data.length > 0) {
@@ -36,6 +53,8 @@ export default class CreateExercise extends Component {
       .catch((error) => {
         console.log(error);
       })
+
+      console.log(this.state)
 
   }
 
@@ -61,6 +80,12 @@ export default class CreateExercise extends Component {
       exerciseName: e.target.value
     })
   }
+  onChangeBankName(e) {
+    this.setState({
+      bankName: e.target.value
+    })
+  }
+
 
   onChangeDate(date) {
     this.setState({
@@ -73,7 +98,7 @@ export default class CreateExercise extends Component {
 
     const exercise = {
       username: this.state.username,
-      exerciseName: this.state.exerciseName,
+      exerciseName: this.state.bankName,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date
@@ -86,82 +111,90 @@ export default class CreateExercise extends Component {
 
     window.location = '/';
     document.getElementById("success").innerHTML = "نام کاربری با موفقیت ساخته شد";
-    
+
     function fade() {
       document.getElementById("success").innerHTML = "";
     }
-    
+
     const myTimeout = setTimeout(fade, 2000);
 
   }
 
   render() {
     return (
-    <div>
-      <h3>ساخت برنامه ورزشی</h3>
-      <form onSubmit={this.onSubmit}>
-        <div className="form-group"> 
-          <label>:نام کاربری</label>
-          <select ref="userInput"
+      <div>
+        <h3>ساخت برنامه ورزشی</h3>
+        <form onSubmit={this.onSubmit}>
+          <div className="form-group">
+            <label>:نام کاربری</label>
+            <select ref="userInput"
               required
               className="form-control"
               value={this.state.username}
               onChange={this.onChangeUsername}>
               {
-                this.state.users.map(function(user) {
-                  return <option 
+                this.state.users.map(function (user) {
+                  return <option
                     key={user}
                     value={user}>{user}
-                    </option>;
+                  </option>;
                 })
               }
-          </select>
-        </div>  
-        <div className="form-group"> 
-          <label>:نام برنامه ورزشی</label>
-          <input  type="text"
+            </select>
+          </div>
+          <div className="form-group">
+            <label>:انتخاب برنامه ورزشی</label>
+            <select ref="exerciseInput"
               required
               className="form-control"
-              value={this.state.exerciseName}
-              onChange={this.onChangeExerciseName}
-              />  
-        </div>
-        <div className="form-group"> 
-          <label>:توضیحات </label>
-          <input  type="text"
+              value={this.state.bankName}
+              onChange={this.onChangeBankName}>
+              {
+                  this.state.banks.map(function(bank) {
+                    return <option 
+                      key={bank}
+                      value={bank}>{bank}
+                      </option>;
+                  })
+              }
+            </select>
+          </div>
+          <div className="form-group">
+            <label>:توضیحات </label>
+            <input type="text"
               required
               className="form-control"
               value={this.state.description}
               onChange={this.onChangeDescription}
-              />
-        </div>
-        <div className="form-group">
+            />
+          </div>
           <label>:(برحسب دقیقه)مدت زمان</label>
-          <input 
-              type="text" 
+          <div className="form-group">
+            <input
+              type="text"
               className="form-control"
               value={this.state.duration}
               onChange={this.onChangeDuration}
-              />
-        </div>
-        <div className="form-group">
-          <label>:تاریخ </label>
-          <div>
-            <DatePicker
-              selected={this.state.date}
-              onChange={this.onChangeDate}
             />
           </div>
-        </div>
+          <div className="form-group">
+            <label>:تاریخ </label>
+            <div>
+              <DatePicker
+                selected={this.state.date}
+                onChange={this.onChangeDate}
+              />
+            </div>
+          </div>
 
-        <div className="form-group">
-          <input type="submit" value="ساخت برنامه" className="btn btn-primary" />
-          <br/>
-          <br/>
-          <h5 id="success"></h5>
-        </div>
-      </form>
-    </div>
+          <div className="form-group">
+            <input type="submit" value="ساخت برنامه" className="btn btn-primary" />
+            <br />
+            <br />
+            <h5 id="success"></h5>
+          </div>
+        </form>
+      </div>
     )
   }
 }

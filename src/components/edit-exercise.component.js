@@ -10,17 +10,20 @@ export default class EditExercise extends Component {
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeExerciseName = this.onChangeExerciseName.bind(this);
+    this.onChangeBankName = this.onChangeBankName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
+      bankName: '',
       username: '',
       description: '',
       duration: 0,
       date: new Date(),
-      users: []
+      users: [],
+      banks: [],
     }
   }
 
@@ -30,7 +33,7 @@ export default class EditExercise extends Component {
       .then(response => {
         this.setState({
           username: response.data.username,
-          exerciseName: response.data.exerciseName,
+          bankName: response.data.bankName,
           description: response.data.description,
           duration: response.data.duration,
           date: new Date(response.data.date)
@@ -45,6 +48,18 @@ export default class EditExercise extends Component {
         if (response.data.length > 0) {
           this.setState({
             users: response.data.map(user => user.username),
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    axios.get(`http://${serverAddress}:5000/bank/`)
+      .then(response => {
+        if (response.data.length > 0) {
+          this.setState({
+            banks: response.data.map(bank => bank.name),
+            
           })
         }
       })
@@ -70,6 +85,11 @@ export default class EditExercise extends Component {
       exerciseName: e.target.value
     })
   }
+  onChangeBankName(e) {
+    this.setState({
+      bankName: e.target.value
+    })
+  }
 
   onChangeDuration(e) {
     this.setState({
@@ -88,6 +108,7 @@ export default class EditExercise extends Component {
 
     const exercise = {
       username: this.state.username,
+      // exerciseName: this.state.bankName,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date
@@ -98,7 +119,7 @@ export default class EditExercise extends Component {
     axios.post(`http://${serverAddress}:5000/exercises/update/` + this.props.match.params.id, exercise)
       .then(res => console.log(res.data));
 
-    window.location = '/';
+    // window.location = '/';
 
     document.getElementById("success").innerHTML = "برنامه ورزشی با موفقیت ویرایش شد";
     
@@ -123,7 +144,7 @@ export default class EditExercise extends Component {
               value={this.state.username}
               onChange={this.onChangeUsername}>
               {
-                this.state.users.map(function(user) {
+                this.state.users.map(function (user) {
                   return <option 
                     key={user}
                     value={user}>{user}
@@ -132,15 +153,23 @@ export default class EditExercise extends Component {
               }
           </select>
         </div>
-        <div className="form-group"> 
-          <label>:نام برنامه ورزشی</label>
-          <input  type="text"
+        <div className="form-group">
+            <label>:انتخاب برنامه ورزشی</label>
+            <select ref="exerciseInput"
               required
               className="form-control"
-              value={this.state.exerciseName}
-              onChange={this.onChangeExerciseName}
-              />
-        </div>
+              value={this.state.bankName}
+              onChange={this.onChangeBankName}>
+              {
+                  this.state.banks.map(function(bank) {
+                    return <option 
+                      key={bank}
+                      value={bank}>{bank}
+                      </option>;
+                  })
+              }
+            </select>
+          </div>
         <div className="form-group"> 
           <label>:توضیحات</label>
           <input  type="text"

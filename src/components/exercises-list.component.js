@@ -17,7 +17,6 @@ const Exercise = props => (
     </td>
   </tr>
 )
-
 export default class ExercisesList extends Component {
   constructor(props) {
     super(props);

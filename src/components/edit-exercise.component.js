@@ -28,12 +28,11 @@ export default class EditExercise extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.match.params.id);
     axios.get(`http://${serverAddress}:5000/exercises/`+this.props.match.params.id)
       .then(response => {
         this.setState({
           username: response.data.username,
-          bankName: response.data.bankName,
+          bankName: response.data.exerciseName,
           description: response.data.description,
           duration: response.data.duration,
           date: new Date(response.data.date)
@@ -59,7 +58,6 @@ export default class EditExercise extends Component {
         if (response.data.length > 0) {
           this.setState({
             banks: response.data.map(bank => bank.name),
-            
           })
         }
       })
@@ -108,26 +106,30 @@ export default class EditExercise extends Component {
 
     const exercise = {
       username: this.state.username,
-      // exerciseName: this.state.bankName,
+      exerciseName: this.state.bankName,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date
     }
 
     console.log(exercise);
-
-    axios.post(`http://${serverAddress}:5000/exercises/update/` + this.props.match.params.id, exercise)
-      .then(res => console.log(res.data));
-
-    // window.location = '/';
+    console.log(this.state);
+    axios.put(`http://${serverAddress}:5000/exercises/update/` + this.props.match.params.id, exercise)
+      .then(res =>{ console.log(res.data);    
+      })
+      .catch((error) => {
+        console.log(error);
+        
+      })
 
     document.getElementById("success").innerHTML = "برنامه ورزشی با موفقیت ویرایش شد";
     
     function fade() {
       document.getElementById("success").innerHTML = "";
+      window.location = '/';
     }
     
-    const myTimeout = setTimeout(fade, 2000);
+    const myTimeout = setTimeout(fade, 1500);
 
   }
   

@@ -10,6 +10,8 @@ import CreateUser from "./components/create-user.component";
 import Details from './components/bank-information.component';
 import Landing from './components/landing-component';
 
+import './index.css'
+
 function App() {
   return (
     <Router>
